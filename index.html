@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de imagens</title>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background-color: rgb(147, 237, 184);
+        }
+
+        h1{
+            text-align: center;
+        }
+
+        h2{
+            margin-top: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        hr{
+            outline: none;
+            border: none;
+            height: 2px;
+            background-color: black;
+            margin-bottom: 2px;
+        }
+
+        .galeria01{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            
+            /* 🔧 grid-template-columns
+            Define quantas colunas e como elas se comportam dentro do grid. */
+
+            /* O que é repeat() no CSS Grid?
+
+            É uma função do CSS Grid usada para evitar repetição manual na hora de declarar colunas ou linhas.
+
+            Em vez de escrever isso:
+            
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+
+            Você pode escrever:
+
+            grid-template-columns: repeat(4, 1fr);
+
+            📦 Sintaxe geral
+
+            repeat(n, valor)
+
+            n → Quantas vezes repetir
+
+            valor → O que será repetido (por exemplo, 1fr, 100px, ou até minmax(...))*/
+            
+            /* auto-fit: o grid encaixa o máximo de colunas possível com no mínimo 250px cada, e os itens se esticam para ocupar o espaço. Se não couberem mais colunas, as que já existem crescem para ocupar o espaço disponível. */
+
+            /* Aqui o 1fr entra em ação só quando sobrar espaço além dos 250px mínimos. Ele diz:
+            “Se tiver espaço sobrando, divida igualmente entre todas as colunas.” */
+            gap: 15px 25px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            /* margin: auto; serve pra centralizar o próprio elemento na horizontal quando eu defino uma largura maxima. */
+        }
+
+        .galeria01 img{
+            width: 100%;
+            /* o motivo de definir uma largura pra imagem apesar da grid "já fazer isso" é simples. A grid define o tamanho da celula que cada imagem vai ocupar, não o tamanho da imagem. Quanto a altura, se houvesse uma grid relacionada, seria o mesmo motivo. */
+            height: 250px;
+            object-fit: cover;
+            /* serve pra não deixar a imagem esticar se houver alteração em sua largura e altura */
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px rgb(0, 0, 0);
+            transition: transform 0.2s ease; 
+            transition: filter 0.2s ease; 
+            transition: 1s;
+        }
+
+        .galeria01 img:hover{
+            opacity: 0.3;
+        }
+
+
+        .galeria02{
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 15px 25px;
+          padding: 20px;
+          max-width: 1000px;
+          margin: auto;
+        }
+
+        .galeria02 img{
+          width: 271.25px;
+          height: 250px;
+          /* Aqui a altura muda conforme a largura se eu colocasse auto*/
+          border-radius: 10px;
+          object-fit: cover;
+          box-shadow: 0px 0px 5px black;
+          transition: transform 0.2s ease; 
+          transition: filter 0.2s ease; 
+          transition: 1s;
+        }
+
+        .galeria02 img:hover{
+          transform: scale(0.9);
+          
+        }
+        
+        .galeria03{
+          column-count: 3;
+          gap: 15px;
+          max-width: 950px;
+          margin: auto;
+        }
+
+        .galeria03 img{
+          width: 100%;
+          margin-bottom: 15px;
+          border-radius: 8px;
+          object-fit: cover;
+          box-shadow: 0px 0px 5px black;
+          display: block;
+          transition: transform 0.3s ease; 
+        }
+
+        .galeria03 img:hover{
+          transform: rotate(5deg);
+        }
+
+        .carrossel{
+          position: relative;
+          width: 450px;
+          height: 350px;
+          overflow: hidden;
+          margin: 40px auto;
+          border-radius: 10px;
+          box-shadow: 0px 0px 5px black;
+        }
+
+        .slides{
+          display: flex;
+          width: 310.99%;
+          height:100%;
+          transition: transform 0.5s ease-in-out;
+        }
+
+        .slide{
+          height: 100%;
+          width: 100%;
+          display: flex; /* ADICIONADO */
+          justify-content: center; /* Centraliza horizontalmente */
+          align-items: center;     /* Centraliza verticalmente */
+          transition: 0.5s;
+        }
+
+        .slide img{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .carrossel:hover  .slide{
+          filter: grayscale(100%);
+          /* filter: blur(2px);
+          box-shadow: 0 4px 8px rgb(255, 255, 255); */
+        }
+
+        input[type="radio"]{
+          display: none;
+        }
+
+        .laborosa{
+          text-align: center;
+          margin-top: -10px;
+          margin-bottom: 15px;
+        }
+
+        .laborosa label{
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          margin: 0px 5px;
+          background-color: #888;
+          border-radius: 50%;
+          cursor: pointer;
+         }
+
+          input#slide01:checked ~ .carrossel .slides{
+            transform: translateX(0%);
+          }
+
+          input#slide02:checked ~ .carrossel .slides{
+            transform: translateX(-38.33%);
+          }
+
+          input#slide03:checked ~ .carrossel .slides{
+            transform: translateX(-83.66%);
+          }
+
+          input#slide01:checked ~ .laborosa label[for="slide01"],
+          input#slide02:checked ~ .laborosa label[for="slide02"],
+          input#slide03:checked ~ .laborosa label[for="slide03"]{
+            background-color: #333;
+          }
+
+
+          .galeria-container {
+      width: 80%;
+      overflow-x: scroll;
+      white-space: nowrap;
+      scroll-behavior: auto;
+      margin: 10px auto;
+      border: 5px solid rgb(48, 126, 189);
+      border-radius: 15px;
+      /* background-color: #4bb5b3; */
+      margin-bottom: 15px;
+    }
+
+    .galeria {
+      display: inline-flex;
+    }
+
+    .imagem {
+      width: 300px;
+      height: 200px;
+      margin: 10px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .imagem img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .galeria-container::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    .galeria-container {
+      scrollbar-width: none;
+    }
+
+
+        .imagem-container {
+  position: relative;
+  display: inline-block;
+}
+.overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.imagem-container:hover .overlay {
+  opacity: 1;
+}
+
+.zoom-container {
+  width: 300px;     /* tamanho fixo do contêiner */
+  height: 200px;
+  overflow: hidden; /* corta o que sair da área */
+  position: relative;
+}
+
+.zoom-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.zoom-container:hover img {
+  transform: scale(1.2); /* Aplica o zoom interno */
+}
+
+.imagem-revelar {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.imagem-revelar img{
+    margin-left: 600px;
+    width: 350px;
+    height: 250px;
+}
+
+.imagem-revelar.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>GALERIA DE FOTOS</h1>
+
+    <h2>Organização em grade (grid)</h2>
+
+    <div class="galeria01">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-2.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-3.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/homem-bonito-de-pele-escura-usando-telefone-celular-e-sorrindo-feliz.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/woman-3236059_1280.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-criatividade-illustrator-para-design-de-aplicativos-moveis.webp" alt="">
+    
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-4.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/office-620822_1280.webp" alt="">
+
+    </div>
+
+<hr>
+<hr>
+
+    <h2>Organização com flexbox (linha ou coluna)</h2>
+
+    <div class="galeria02">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-2.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-3.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/homem-bonito-de-pele-escura-usando-telefone-celular-e-sorrindo-feliz.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/woman-3236059_1280.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-criatividade-illustrator-para-design-de-aplicativos-moveis.webp" alt="">
+    
+        <img src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-4.webp" alt="">
+
+        <img src="/IMGs/GALERIA/jpg_to_webp/office-620822_1280.webp" alt="">
+
+    </div>
+
+    <hr>
+    <hr>
+
+    <h2>Organização em mosaico (Masonry)</h2>
+
+    <div class="galeria03">
+
+      <img style="width: 300px; height: 200px;" src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-2.webp" alt="">
+
+      <img style="width: 300px; height: 250px;" src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-3.webp" alt="">
+
+      <img style="width: 300px; height: 280px;" src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos.webp" alt="">
+
+      <img style="width: 300px; height: 300px;" src="/IMGs/GALERIA/jpg_to_webp/homem-bonito-de-pele-escura-usando-telefone-celular-e-sorrindo-feliz.webp" alt="">
+
+      <img style="width: 300px; height: 446px;" src="/IMGs/GALERIA/jpg_to_webp/woman-3236059_1280.webp" alt="">
+
+      <img style="width: 300px; height: 250px;" src="/IMGs/GALERIA/jpg_to_webp/conceito-de-criatividade-illustrator-para-design-de-aplicativos-moveis.webp" alt="">
+  
+      <img style="width: 300px; height: 280px;" src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-4.webp" alt="">
+
+      <img style="width: 300px; height: 200px;" src="/IMGs/GALERIA/jpg_to_webp/office-620822_1280.webp" alt="">
+
+  </div>
+
+  <hr>
+  <hr>
+
+  <h2>Carrossel com input type radio</h2>
+
+  <input type="radio" name="carousel" id="slide01" checked>
+  <input type="radio" name="carousel" id="slide02">
+  <input type="radio" name="carousel" id="slide03">
+
+  <div class="carrossel">
+
+    <div class="slides">
+
+      <img class="slide" src="/IMGs/GALERIA/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-2.jpg" alt="">
+
+      <img class="slide" src="/IMGs/GALERIA/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-3.jpg" alt="">
+      
+      <img class="slide" src="/IMGs/GALERIA/jpg_to_webp/conceito-de-marketing-de-midia-s.webp" alt="">
+
+    </div>
+
+  </div>
+
+  <nav class="laborosa">
+
+    <label for="slide01"></label>
+    <label for="slide02"></label>
+    <label for="slide03"></label>
+
+  </nav>
+
+  <hr>
+  <hr>
+
+  <h2>Carrossel com scroll infinito (Revisar mais tarde...)</h2>
+
+  <div class="galeria-container" id="galeria-container">
+    <div class="galeria" id="galeria">
+      <!-- galeria será preenchida via JS -->
+    </div>
+  </div>
+  
+  <hr>
+  <hr>
+
+    <div class="imagem-container">
+        <img src="/IMGs/GALERIA/jpg_to_webp/woman-3236059_1280.webp" />
+        <div class="overlay"></div>
+      </div>
+
+      <div class="zoom-container">
+        <img src="/IMGs/GALERIA/jpg_to_webp/office-620822_1280.webp" alt="Imagem com zoom">
+      </div>
+
+      <div class="imagem-revelar">
+        <img src="/IMGs/GALERIA/jpg_to_webp/homem-bonito-de-pele-escura-usando-telefone-celular-e-sorrindo-feliz.webp" alt="Imagem">
+      </div>
+
+      <p>fotos deslizam na horizontal, a do meio sempre fica mais clara</p>
+
+</body>
+
+
+
+
+<script>
+  const container = document.getElementById('galeria-container');
+  const galeria = document.getElementById('galeria');
+
+  const imagens = [
+    "IMGs/GALERIA/woman-3236059_1280.jpg",
+    "IMGs/GALERIA/office-620822_1280.jpg",
+    "IMGs/GALERIA/homem-bonito-de-pele-escura-usando-telefone-celular-e-sorrindo-feliz.jpg",
+    "IMGs/GALERIA/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos.jpg",
+    "IMGs/GALERIA/conceito-de-marketing-de-midia-social-para-marketing-com-aplicativos-4.jpg"
+  ];
+
+  // Adiciona 3 cópias da galeria (antes, central, depois)
+  for (let i = 0; i < 3; i++) {
+      //aqui for each tem dois parametros, eles poderiam ter qualquer nome. O primeiro representa o item atual da array e o segundo a sua posição..
+    imagens.forEach((src, index) => {
+      const div = document.createElement('div');
+      div.className = 'imagem';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Imagem ${index + 1}`;
+      div.appendChild(img);
+      galeria.appendChild(div);
+    });
+  }
+
+  
+
+  const grupoWidth = galeria.scrollWidth / 3;
+
+  /*  O que é galeria.scrollWidth?
+
+É a largura total de todo o conteúdo da galeria, incluindo o que está fora da tela (porque está rolável).
+
+Suponha:
+Cada imagem tem 300px de largura
+
+Você tem 5 imagens por grupo
+
+Você clonou o grupo 3 vezes (antes, meio, depois)
+
+Então:
+
+5 imagens x 300px = 1500px (por grupo)
+3 grupos = 1500px x 3 = 4500px no total
+
+🔹 galeria.scrollWidth(largura total do scroll) vai ser 4500px
+
+🔹 grupoWidth = galeria.scrollWidth / 3 = 1500px
+
+Ou seja, a scrollWidth(largura total do scroll) ainda é de 4500px, mas como seu valor foi dividido por 3, agora a variável grupoWidth vale 1500px. O que possibilita o scrollLeft rolar pra imagem do meio ou se deslocar 1500px da esquerda.
+
+ */
+
+  // Centraliza na segunda cópia ao carregar
+  window.onload = () => {
+    container.scrollLeft = grupoWidth;
+    /* é como se eu disse: "quando a página carregar, role o scroll pra esquerda de forma correspondente ao número de pixels da variável grupoWidth*/ 
+  };
+
+  // Detecta ultrapassagem dos limites da cópia central
+  container.addEventListener('scroll', () => {
+
+  // <= (menor ou igual) 
+    if (container.scrollLeft <= grupoWidth * 0.1) {
+      // Passou muito para a esquerda, volta para o meio
+      
+      // += (acrecente o valor a variável) Isso é diferente de + (somar). Ex.:  
+
+      // SOMA (+):
+
+      // let x = 5;
+      // x + 3; // Isso só calcula, mas não faz nada com o resultado
+      // console.log(x); // Resultado: 5 (não mudou!)
+
+      // SOMA E ATRIBUIÇÃO (+=):
+
+      // let x = 5;
+      // x += 3; // Isso é igual a: x = x + 3;
+      // console.log(x); // Resultado: 8
+      container.scrollLeft += grupoWidth;
+  
+  // >= (maior ou igual)
+    } else if (container.scrollLeft >= grupoWidth * 1.9) {
+      
+      /* if (condição1) {
+      // se condição1 for verdadeira
+      } else if (condição2) {
+      // se condição1 for falsa e condição2 for verdadeira
+      } */
+
+      // Passou muito para a direita, volta para o meio
+      
+      // -= (decrecente o valor a variável) Isso é diferente de - (subtrair). Ex.:  
+
+      // SUBTRAI (-):
+
+      // let x = 5;
+      // x - 3; // Isso só calcula, mas não faz nada com o resultado
+      // console.log(x); // Resultado: 5 (não mudou!)
+
+      // SUBTRAI E ATRIBUIÇÃO (-=):
+
+      // let x = 5;
+      // x -= 3; // Isso é igual a: x = x - 3;
+      // console.log(x); // Resultado: 2
+      
+      container.scrollLeft -= grupoWidth;
+    }
+  });
+</script>
+
+
+
+
+
+
+
+<script>
+    const elementos = document.querySelectorAll('.imagem-revelar');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+});
+
+elementos.forEach(el => observer.observe(el));
+</script>
+
+</html>
